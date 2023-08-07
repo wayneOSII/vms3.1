@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('areas', function (Blueprint $table) {
+        Schema::create('attendance_verification_codes', function (Blueprint $table) {
             $table->id();
-            $table->string('cleanarea');
-            $table->string('weekday');
-            $table->string('period');
+            $table->string('code');
             $table->timestamps();
         });
     }
@@ -25,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('areas');
+        Schema::dropIfExists('attendance_verification_codes');
     }
 };

@@ -8,6 +8,7 @@ use Illuminate\Support\ServiceProvider;
 use App\Filament\Resources\RoleResource;
 use App\Filament\Resources\UserResource;
 use App\Filament\Resources\PermissionResource;
+use Filament\Navigation\NavigationItem;
 
 class FilamentServiceProvider extends ServiceProvider
 {
@@ -24,6 +25,30 @@ class FilamentServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {   
+        Filament::serving(function () {
+            if (auth()->user()) {
+                if (auth()->user()->is_admin == 1 && auth()->user()->hasAnyRole(['super-admin','admin','moderator'])){
+                    Filament::registerNavigationItems([
+                        NavigationItem::make('check')
+                            ->url('/admin/attendances/check')
+                            ->icon('heroicon-o-presentation-chart-line'),
+                    ]);
+                    Filament::registerNavigationItems([
+                        NavigationItem::make('attend')
+                            ->url('/admin/attendances/attend')
+                            ->icon('heroicon-o-presentation-chart-line'),
+                    ]);
+                }elseif (auth()->user()->is_admin == 0) {
+                    Filament::registerNavigationItems([
+                        NavigationItem::make('attend')
+                            ->url('/admin/attendances/attend')
+                            ->icon('heroicon-o-presentation-chart-line'),
+                    ]);
+                }
+            }
+            
+        });
+
         //usermenu
         Filament::serving(function() {
             //logout

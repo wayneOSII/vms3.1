@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('areas', function (Blueprint $table) {
+        Schema::create('semester_start_and_ends', function (Blueprint $table) {
             $table->id();
-            $table->string('cleanarea');
-            $table->string('weekday');
-            $table->string('period');
+            $table->string('semester_start');
+            $table->string('semester_end');
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('areas');
+        Schema::dropIfExists('semester_start_and_ends');
     }
 };

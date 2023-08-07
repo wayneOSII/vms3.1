@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Filament\Resources\AttendanceResource\Pages\CheckAttendance;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,3 +34,15 @@ Route::middleware([
 Route::get('/admin/login', function () {
     return redirect()->route('/');
 })->name('filament.auth.login');
+
+// Route::get('/admin/attendances/check', CheckAttendance::class)->name('check-attendance');
+
+// Route::get('/admin/attendances/check',function () {
+//     // 這是一個被限制訪問的頁面
+//     return redirect()->route('/');
+// })->middleware('userCheckPermission');
+
+Route::middleware(['userCheckPermission'])->group(function () {
+    // 定義您的自訂頁面的路由
+    Route::get('/admin/attendances/check', CheckAttendance::class);
+});

@@ -8,6 +8,7 @@ use Filament\Tables;
 use App\Models\Reservation;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
+use App\Rules\UniqueReservation;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Card;
 use App\Rules\AreaIdOccurrenceLimit;
@@ -16,10 +17,10 @@ use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
+use App\Models\CurrentAcademicYearAndSemester;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\ReservationResource\Pages;
 use App\Filament\Resources\ReservationResource\RelationManagers;
-use App\Rules\UniqueReservation;
 
 class ReservationResource extends Resource
 {
@@ -27,12 +28,14 @@ class ReservationResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
+    protected static ?string $navigationGroup = '預約';
+
     public static function form(Form $form): Form
     {
 
         $user = Auth::user();
         // $currentAcademicYear = getCurrentAcademicYearAndSemester();
-        $currentAcademicYearAndSemester = session('current_academic_year_semester');
+        $currentAcademicYearAndSemester = CurrentAcademicYearAndSemester::pluck('CurrentAcademicYearAndSemester')->first();
         $values = Reservation::where('semester', $currentAcademicYearAndSemester)->pluck('area_id');
         $semesters = Reservation::where('semester', $currentAcademicYearAndSemester)->pluck('semester');
         // $values = Reservation::pluck('area_id');
@@ -75,7 +78,7 @@ class ReservationResource extends Resource
                             ->options($filteredOptions)
                             ->searchable()
                             // ->rules([new AreaIdOccurrenceLimit($values,$semesters)])
-                            // ->rules([new UniqueReservation])
+                            ->rules([new UniqueReservation])
                             ->required(),
                     ])
             ]);

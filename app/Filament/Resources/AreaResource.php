@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use Filament\Forms;
 use App\Models\Area;
 use Filament\Tables;
+use App\Models\Reservation;
 use Filament\Resources\Form;
 use Filament\Resources\Table;
 use Filament\Resources\Resource;
@@ -16,15 +17,17 @@ use Filament\Tables\Actions\ButtonAction;
 use Filament\Tables\Actions\DeleteAction;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\AreaResource\Pages;
+use App\Models\CurrentAcademicYearAndSemester;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\AreaResource\RelationManagers;
-use App\Models\Reservation;
 
 class AreaResource extends Resource
 {
     protected static ?string $model = Area::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-location-marker';
+
+    protected static ?string $navigationGroup = '預約';
 
     public static function form(Form $form): Form
     {
@@ -49,7 +52,7 @@ class AreaResource extends Resource
     public static function table(Table $table): Table
     {   
         $isAdmin = Auth::user()->hasRole('admin');
-        // $currentAcademicYearAndSemester = session('current_academic_year_semester');
+        // $currentAcademicYearAndSemester = CurrentAcademicYearAndSemester::pluck('CurrentAcademicYearAndSemester')->first();
         // $current_people = Reservation::where('semester', $currentAcademicYearAndSemester)->pluck('area_id');
 
         return $table
@@ -105,7 +108,7 @@ function getSemesterReservationCount($id)
 {
     // 假設你使用的是Eloquent模型Reservation
     // 在這裡你可以依據你的實際情況，將Reservation替換成適當的模型名稱
-    $currentAcademicYearAndSemester = session('current_academic_year_semester');
+    $currentAcademicYearAndSemester = CurrentAcademicYearAndSemester::pluck('CurrentAcademicYearAndSemester')->first();
 
     // 使用Eloquent模型方法取得指定學期的數量
     $count = Reservation::where('semester', $currentAcademicYearAndSemester)

@@ -3,13 +3,13 @@
 namespace App\Rules;
 
 use Closure;
+use App\Models\Attendance;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Validation\Rule;
 use App\Models\CurrentAcademicYearAndSemester;
-use App\Models\Reservation;
 use Illuminate\Contracts\Validation\ValidationRule;
 
-class UniqueReservation implements Rule
+class UniqueAttendance implements Rule
 {
     public $message;
 
@@ -20,14 +20,15 @@ class UniqueReservation implements Rule
         $currentWeek = CurrentAcademicYearAndSemester::pluck('week')->first();
         // $currentWeekNumber = intval(preg_replace('/\D/', '', $currentWeek));
 
-        $existingReservation = Reservation::where('semester', $currentAcademicYearAndSemester)
+        $existingAttendance = Attendance::where('semester', $currentAcademicYearAndSemester)
             ->where('student_id', $user->student_id)
+            ->where('week', $value)
             ->first();
         
-        if (!$existingReservation) {
+        if (!$existingAttendance) {
             return true;
         }else{
-            $this->message = '本學期已有預約紀錄';
+            $this->message = '已有出席紀錄';
             return false;
         }
 
