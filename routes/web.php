@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ExcelController;
 use App\Filament\Resources\AttendanceResource\Pages\CheckAttendance;
 
 /*
@@ -46,3 +47,5 @@ Route::middleware(['userCheckPermission'])->group(function () {
     // 定義您的自訂頁面的路由
     Route::get('/admin/attendances/check', CheckAttendance::class);
 });
+
+Route::get('/generate-excel', [ExcelController::class, 'generateExcel'])->name('download.xlsx');
