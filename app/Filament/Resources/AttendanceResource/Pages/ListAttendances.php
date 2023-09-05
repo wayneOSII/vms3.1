@@ -13,14 +13,7 @@ class ListAttendances extends ListRecords
 
     protected function getActions(): array
     {
-        $isAdmin = Auth::user()->hasRole('admin');
-
-        return $isAdmin ?[
-            Actions\ButtonAction::make('輸出xlsx檔')
-                ->url(fn()=> route('download.xlsx'))
-                ->openUrlInNewTab(),
-            Actions\CreateAction::make(),
-        ]:[
+        return [
             Actions\CreateAction::make(),
         ];
     }
