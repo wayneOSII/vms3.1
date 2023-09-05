@@ -31,18 +31,21 @@ class FilamentServiceProvider extends ServiceProvider
                     Filament::registerNavigationItems([
                         NavigationItem::make('check')
                             ->url('/admin/attendances/check')
-                            ->icon('heroicon-o-presentation-chart-line'),
+                            ->icon('heroicon-o-presentation-chart-line')
+                            ->group('出缺席管理'),
                     ]);
                     Filament::registerNavigationItems([
                         NavigationItem::make('attend')
                             ->url('/admin/attendances/attend')
-                            ->icon('heroicon-o-presentation-chart-line'),
+                            ->icon('heroicon-o-presentation-chart-line')
+                            ->group('出缺席管理'),
                     ]);
                 }elseif (auth()->user()->is_admin == 0) {
                     Filament::registerNavigationItems([
                         NavigationItem::make('attend')
                             ->url('/admin/attendances/attend')
-                            ->icon('heroicon-o-presentation-chart-line'),
+                            ->icon('heroicon-o-presentation-chart-line')
+                            ->group('出缺席管理'),
                     ]);
                 }
             }
@@ -85,5 +88,13 @@ class FilamentServiceProvider extends ServiceProvider
             }
             
         });
+
+        Filament::registerNavigationGroups([
+            '出缺席管理',
+            '預約',
+            '公告管理',
+            '系統時間管理',
+            'Admin Management',
+        ]);
     }
 }

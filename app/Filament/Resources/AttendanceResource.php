@@ -33,6 +33,8 @@ class AttendanceResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-check';
 
+    protected static ?string $navigationGroup = '出缺席管理';
+
     public static function form(Form $form): Form
     {
         $user = Auth::user();

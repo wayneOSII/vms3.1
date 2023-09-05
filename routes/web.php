@@ -1,8 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\SiteController;
 use App\Http\Controllers\ExcelController;
 use App\Filament\Resources\AttendanceResource\Pages\CheckAttendance;
+use App\Http\Controllers\PdfController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,9 +18,9 @@ use App\Filament\Resources\AttendanceResource\Pages\CheckAttendance;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('/');
+// Route::get('/', function () {
+//     return view('welcome');
+// })->name('/');
 
 Route::middleware([
     'auth:sanctum',
@@ -33,7 +36,8 @@ Route::middleware([
 });
 
 Route::get('/admin/login', function () {
-    return redirect()->route('/');
+    // return redirect()->route('/');
+    return redirect()->route('home');
 })->name('filament.auth.login');
 
 // Route::get('/admin/attendances/check', CheckAttendance::class)->name('check-attendance');
@@ -49,3 +53,9 @@ Route::middleware(['userCheckPermission'])->group(function () {
 });
 
 Route::get('/generate-excel', [ExcelController::class, 'generateExcel'])->name('download.xlsx');
+Route::get('/{record}/pdf/download',[PdfController::class, 'download'])->name('certification.pdf.download');
+
+Route::get('/', [PostController::class, 'index'])->name('home');
+Route::get('/about-us', [SiteController::class, 'about'])->name('about-us');
+Route::get('/category/{category:slug}', [PostController::class, 'byCategory'])->name('by-category');
+Route::get('/{post:slug}', [PostController::class, 'show'])->name('view');
